@@ -31,13 +31,15 @@ fun IU(miViewModel: MyViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        // Mostrar nivel y tiempo
-        Text(text = "Nivel: $nivelActual", fontSize = 20.sp)
-        Text(text = "Tiempo: $tiempoRestante s", fontSize = 20.sp)
-        // Mostrar récords
-        Text(text = "Récord: Nivel $recordNivel", fontSize = 18.sp, color = androidx.compose.ui.graphics.Color.Gray)
-        Text(text = "Fecha: $recordFecha", fontSize = 18.sp, color = androidx.compose.ui.graphics.Color.Gray)
-
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(text = "Nivel: $nivelActual", fontSize = 20.sp)
+            Text(text = "Tiempo: $tiempoRestante s", fontSize = 20.sp)
+            Text(text = "Récord: Nivel $recordNivel", fontSize = 18.sp, color = androidx.compose.ui.graphics.Color.Gray)
+            Text(text = "Fecha: $recordFecha", fontSize = 18.sp, color = androidx.compose.ui.graphics.Color.Gray)
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
