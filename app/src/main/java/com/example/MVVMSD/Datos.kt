@@ -21,6 +21,6 @@ enum class Estados(val start_activo: Boolean, val boton_activo: Boolean) {
 
 object Datos {
     const val PREF_NAME = "SimonDicePrefs"
-    const val KEY_MAX_LEVEL = "max_level_key"
-    const val KEY_DATETIME = "datetime_key"
+    const val KEY_MAX_LEVEL = "RecordNivel"
+    const val KEY_DATETIME = "RecordFecha"
 }
