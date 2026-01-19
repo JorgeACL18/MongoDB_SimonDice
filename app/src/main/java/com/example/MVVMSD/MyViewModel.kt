@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.MVVMSD.repository.DataRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,18 +16,26 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.random.Random
+import kotlinx.coroutines.launch
+
 
 class MyViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MyViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MyViewModel(context.getSharedPreferences(Datos.PREF_NAME, Context.MODE_PRIVATE)) as T
+            return MyViewModel(
+                context.getSharedPreferences(Datos.PREF_NAME, Context.MODE_PRIVATE),
+                context
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 
-class MyViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
+class MyViewModel(
+    private val sharedPreferences: SharedPreferences,
+    private val context: Context
+) : ViewModel() {
 
     private val TAG_LOG = "miDebug"
 
@@ -156,6 +165,11 @@ class MyViewModel(private val sharedPreferences: SharedPreferences) : ViewModel(
         val recordActual = _recordNivel.value
         Log.d(TAG_LOG, "Intento fallido en nivel: $nivelActual. Récord anterior: $recordActual")
 
+        viewModelScope.launch {
+            val repository = DataRepository(context)
+            repository.syncDataToMongoDB()
+        }
+
         if (nivelActual > recordActual) {
             Log.d(TAG_LOG, "¡Nuevo récord! Nivel: $nivelActual")
             val currentTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
@@ -190,5 +204,13 @@ class MyViewModel(private val sharedPreferences: SharedPreferences) : ViewModel(
 
     private fun calcularTiempoPorNivel(nivel: Int): Int {
         return maxOf(5, 15 - (nivel * 2))
+    }
+}
+
+class MyViewModelRepo(private val repository: DataRepository) : ViewModel() {
+    fun guardarEnMongoDB() {
+        viewModelScope.launch {
+            repository.syncDataToMongoDB()
+        }
     }
 }
