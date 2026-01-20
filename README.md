@@ -329,39 +329,6 @@ app/src/main/java/com/example/MVVMSD/
 - [ ] Modo de dificultad personalizado
 - [ ] Integración con redes sociales
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-
----
-
-## 👨‍💻 Autor
-
-**JorgeACL18**
-- GitHub: [@JorgeACL18](https://github.com/JorgeACL18)
-- Email: jcanozolorenzo@danielcastelao.org
-
----
-
-## 📞 Soporte
-
-Si encuentras problemas o tienes sugerencias:
-1. Abre un [Issue](https://github.com/JorgeACL18/MongoDB_SimonDice/issues)
-2. Envía un correo al autor
-3. Contribuye con un Pull Request
-
----
-
-## 🙏 Agradecimientos
-
-- Comunidad de Kotlin
-- Jetpack Compose Team
-- MongoDB Community
-- Android Developers
-
-
 
 
 
