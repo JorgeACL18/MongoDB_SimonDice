@@ -1,63 +1,127 @@
-# SharedPreferences en el juego Simón Dice
+# 🎮 Simon Says - MVVM Memory Game
 
-Para realizar esta tarea, tuvimos que hacer que nuestro juego de Simón dice guarde una serie de datos, en este caso nuestro mejor nivel y cuando se se alcanzó aquel nivel.
+Un juego de memoria interactivo desarrollado en **Kotlin** con arquitectura **MVVM**, integración con **MongoDB** y persistencia local con **SharedPreferences**.
 
-Con SharedPreferences se pueden guardar dichos datos.
+---
 
-## Clase Datos.kt:
-Dentro de esta clase solo tenemos que crear las variables que guardará nuestro SharedPreferences:
+## 📋 Tabla de Contenidos
 
-<img width="435" height="210" alt="Captura desde 2025-12-09 09-06-54" src="https://github.com/user-attachments/assets/be495851-7626-4408-9170-ed06b7e57648" />
+- [Características](#características)
+- [Tecnologías](#tecnologías)
+- [Arquitectura](#arquitectura)
+- [Funcionalidades](#funcionalidades)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Estructura del Proyecto](#estructura-del-proyecto)
 
-## MyViewModel:
-Dentro de esta clase es donde tendremos todo lo que hace que nuestro programa funcione, por lo tanto aquí crearemos las funciones del SharedPreferences.
+---
 
-Lo primero que hay que hacer es crear la clase MyViewModelFactory, lo que permite la utilización del SharedPreferences.
+## ✨ Características
 
-<img width="1122" height="203" alt="Captura desde 2025-12-09 09-22-17" src="https://github.com/user-attachments/assets/64eb5476-3025-4602-9fc9-528b2bf67304" />
+✅ **Gameplay Dinámico**: Sigue una secuencia de colores que aumenta en dificultad  
+✅ **Sistema de Niveles**: 10 niveles progresivos con tiempo decreciente  
+✅ **Récord Persistente**: Guarda tu mejor puntuación con fecha y hora  
+✅ **Sincronización en la Nube**: Integración con MongoDB para respaldo de datos  
+✅ **Efectos de Sonido**: Tonos únicos para cada botón de color  
+✅ **Temporizador Dinámico**: Tiempo decreciente según el nivel  
+✅ **Interfaz Reactiva**: UI actualizada en tiempo real con Compose
 
+---
 
-Después, creamos las variables `_recordNivel` y `_recordFecha` como MutableStateFlow para almacenar el nivel y la fecha y creamos otras variables `recordNivel` y `recordFecha` que llaman a las variables anteriores para poder usarlas en la IU.
+## 🛠️ Tecnologías
 
-<img width="1122" height="187" alt="Captura desde 2025-12-09 09-23-00" src="https://github.com/user-attachments/assets/4238609c-9124-4aee-91d7-35c835278555" />
+| Tecnología | Versión | Propósito |
+|---|---|---|
+| **Kotlin** | 1.9+ | Lenguaje principal |
+| **Jetpack Compose** | Latest | Interfaz de usuario |
+| **MVVM** | Architecture | Patrón de diseño |
+| **Coroutines** | Latest | Operaciones asincrónicas |
+| **MongoDB** | Cloud | Base de datos remota |
+| **SharedPreferences** | Built-in | Almacenamiento local |
+| **Gradle** | 8.0+ | Build system |
 
+---
 
-Por último, dentro de la función `perderJuego()` se guardan los nuevos datos de nuestro nuevo récord, editando las variables que teníamos anteriormente.
+## 🏗️ Arquitectura
 
-<img width="1015" height="362" alt="Captura desde 2025-12-09 09-24-01" src="https://github.com/user-attachments/assets/3ae160e1-1d04-4fb4-9f53-6bd3b6646921" />
+El proyecto sigue el patrón **MVVM (Model-View-ViewModel)**:
 
+---
 
-## IU
-Para poder ver cual es nuestro récord cuando queramos jugar, tenemos que añadir las variables que creamos (`recordNivel` y `recordFecha`) en el MyViewModel dentro de la clase IU.
+## 🎮 Funcionalidades
 
-Es una tarea sencilla, solo tenemos que introducir estas variables dentro de la clase pirncipal `IU()` y después llamarlas.
+### 1. **Gestión de Estados del Juego**
 
-<img width="1058" height="531" alt="Captura desde 2025-12-09 09-30-24" src="https://github.com/user-attachments/assets/ba7be7ef-9ca3-4fee-851e-96c973aec5c2" />
+El juego cuenta con 5 estados principales:
 
-## MainActivity
-Para acabar nuestro SharedPreferences, solo tenemos que ir a la MainActivity y hacer que use la clase MyViewModelFactory.
+| Estado | Descripción |
+|--------|-------------|
+| `INICIO` | Pantalla inicial, esperando que el jugador inicie |
+| `GENERANDO` | Preparando el nuevo nivel |
+| `MOSTRANDO_SEC` | Reproduciendo la secuencia de colores |
+| `ADIVINANDO` | Esperando la entrada del jugador |
+| `JUEGO_PERDIDO` | Fin del juego por error o tiempo agotado |
+| `JUEGO_GANADO` | Completaron los 10 niveles |
 
-<img width="929" height="289" alt="Captura desde 2025-12-09 09-32-44" src="https://github.com/user-attachments/assets/43e7b0b8-77de-47df-a204-715a2daf0f4b" />
+**Flujo de Estados:**
 
-## Resultado:
-El juego se debería ver ahora así:
+### 2. **Sistema de Niveles**
 
-- Antes de empezar el juego:
+- **Niveles totales**: 10
+- **Mecánica**: Cada nivel añade un nuevo color a la secuencia
+- **Dificultad progresiva**: El tiempo disminuye con cada nivel
 
-  
-<img width="390" height="835" alt="Captura desde 2025-12-09 08-59-41" src="https://github.com/user-attachments/assets/3cb0872a-071a-4818-be0a-eab1021c9364" />
+**Fórmula de cálculo de tiempo:**
+```kotlin
+tiempoSegundos = máximo(5, 15 - (nivel * 2))
+```
 
+### 3. **Secuencia de Colores**
+┌─────────────────────────────────────────┐
+│  Iniciar Juego                          │
+├─────────────────────────────────────────┤
+│  1️⃣  Generar número aleatorio (0-3)    │
+│  2️⃣  Añadirlo a la secuencia           │
+│  3️⃣  Reproducir secuencia completa     │
+│  4️⃣  Esperar entrada del jugador       │
+│  5️⃣  Validar secuencia                 │
+│  6️⃣  Siguiente nivel o fin de juego    │
+└─────────────────────────────────────────┘
 
-- Después de jugar y obtener un nuevo récord:
+### 4. **Sistema de Temporizador**
 
+- **⏱️ Dinámico**: Varía según el nivel.
+- **🔄 Reactivo**: Se actualiza cada segundo en tiempo real.
+- **⛔ Validación**: Si el tiempo llega a 0, el juego se pierde.
 
-<img width="390" height="835" alt="Captura desde 2025-12-09 09-00-14" src="https://github.com/user-attachments/assets/6fb18892-8671-4089-aa41-9a19b2a3fd6c" />
+**Comportamiento**
+```kotlin
+while (tiempoRestante > 0 && estadoActual == ADIVINANDO) {
+    delay(1000ms)
+    tiempoRestante--
+}
+```
+### 5. **Validación de entrada**
 
+- Secuencia:  [0, 2, 1]
+- Entrada:    [0, 2, 1] ✅ Correcto → Siguiente nivel
+- Entrada:    [0, 1, 1] ❌ Incorrecto → Fin del juego
 
-- Al obtener el nuevo récord, si vamos al SharedPreferences, se debe ver algo así:
+### 6. **Sistema de Récords**
 
+- KEY_MAX_LEVEL:  Nivel más alto alcanzado
+- KEY_DATETIME:   Fecha y hora del récord
 
-<img width="555" height="113" alt="Captura desde 2025-12-09 09-35-33" src="https://github.com/user-attachments/assets/12d1f551-b157-4f2c-b344-036c7e364c41" />
+### 7. **Sincronización MongoDB**
+```json
+{
+"usuario": "JorgeACL18",
+"nivelMaximo": 8,
+"fecha": "15/03/2025 14:30:45",
+"timestamp": 1710506445000
+}
+```
+
 
 
 
