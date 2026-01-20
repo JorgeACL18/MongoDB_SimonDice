@@ -76,19 +76,7 @@ El juego cuenta con 5 estados principales:
 tiempoSegundos = máximo(5, 15 - (nivel * 2))
 ```
 
-### 3. **Secuencia de Colores**
-┌─────────────────────────────────────────┐
-│  Iniciar Juego                          │
-├─────────────────────────────────────────┤
-│  1️⃣  Generar número aleatorio (0-3)    │
-│  2️⃣  Añadirlo a la secuencia           │
-│  3️⃣  Reproducir secuencia completa     │
-│  4️⃣  Esperar entrada del jugador       │
-│  5️⃣  Validar secuencia                 │
-│  6️⃣  Siguiente nivel o fin de juego    │
-└─────────────────────────────────────────┘
-
-### 4. **Sistema de Temporizador**
+### 3. **Sistema de Temporizador**
 
 - **⏱️ Dinámico**: Varía según el nivel.
 - **🔄 Reactivo**: Se actualiza cada segundo en tiempo real.
@@ -101,18 +89,18 @@ while (tiempoRestante > 0 && estadoActual == ADIVINANDO) {
     tiempoRestante--
 }
 ```
-### 5. **Validación de entrada**
+### 4. **Validación de entrada**
 
 - Secuencia:  [0, 2, 1]
 - Entrada:    [0, 2, 1] ✅ Correcto → Siguiente nivel
 - Entrada:    [0, 1, 1] ❌ Incorrecto → Fin del juego
 
-### 6. **Sistema de Récords**
+### 5. **Sistema de Récords**
 
 - KEY_MAX_LEVEL:  Nivel más alto alcanzado
 - KEY_DATETIME:   Fecha y hora del récord
 
-### 7. **Sincronización MongoDB**
+### 6. **Sincronización MongoDB**
 ```json
 {
 "usuario": "JorgeACL18",
